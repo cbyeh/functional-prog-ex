@@ -117,7 +117,7 @@ const fold_left = function (f, base, ls) {
 */
 
 // const map = (f, ls) => /** <FILL-IN> **/ undefined; /** </FILL-IN> **/
-const map = (f, ls) => fold_left(f, 0, ls);
+const map = (f, ls) => fold_left((x) => f, x, ls);
 
 /* TASK 3 (7.5pts):
   In a similar fashion to map, your next task is to define the filter function
