@@ -91,7 +91,7 @@ const fold_left = function (f, base, ls) {
 
   // Write the recursive fold_left call
   // return /** <FILL-IN> **/ undefined; /** </FILL-IN> **/
-  return fold_left (f, f(base, ls.first()), ls.shift());
+  return fold_left(f, f(base, ls.first()), ls.shift());
 };
 
 /* TASK 2 (10pts):
@@ -117,7 +117,7 @@ const fold_left = function (f, base, ls) {
 */
 
 // const map = (f, ls) => /** <FILL-IN> **/ undefined; /** </FILL-IN> **/
-const map = (f, ls) => fold_left((x) => f, x, ls);
+const map = (f, ls) => fold_left((lst, val) => lst.push(f(val)), List([]), ls);
 
 /* TASK 3 (7.5pts):
   In a similar fashion to map, your next task is to define the filter function
@@ -135,12 +135,13 @@ const map = (f, ls) => fold_left((x) => f, x, ls);
 
   filter(x => x <= 2, List([1,2,3,4])) ------> List([1,2])
   filter(x => x % 2 == 0, List([1,2,3,4])) ------> List([2,4])
+  filter((x) => x <= 2, List([1, 2, 3, 4])).equals(List([1, 2])));
 
   Again, your constraint is to use fold_left only (no loops!).
 */
 
-const filter = (f, ls) => fold_left(f, 0, ls);
-
+// const filter = (f, ls) => /** <FILL-IN> **/ undefined; /** </FILL-IN> **/
+const filter = (f, ls) => fold_left((lst, val) => { if (f(val)) return lst.push(val); else return lst }, List([]), ls);
 
 /* TASK 4 (7.5pts):
   Similar to filter we have another function called partition. This function
@@ -163,7 +164,11 @@ const filter = (f, ls) => fold_left(f, 0, ls);
   are not allowed to use other looping constructs, even fold_left.
 */
 
-const partition = (f, ls) => /** <FILL-IN> **/ undefined; /** </FILL-IN> **/
+const partition = (f, ls) => {
+  left = filter(f, ls);
+  right = filter((x) => !f(x), ls);
+  return List([left, right]);
+}
 
 
 /* TASK 5 (15pts):
@@ -194,10 +199,8 @@ const quicksort = function (ls) {
   if (ls.size <= 1) {
     return ls;
   }
-
-  /** <FILL-IN> **/
-  return undefined;
-  /** </FILL-IN> **/
+  var part = partition((x) => x <= ls.first(), ls.shift());
+  return List([]).concat(quicksort(part.first()), ls.first(), quicksort(part.last()));
 };
 
 
@@ -206,8 +209,9 @@ const quicksort = function (ls) {
   may wish to come up with additional tests and examples.
 */
 
-assert(sumList(List([1, 2, 3, 4])) == 10);
+// assert(sumList(List([1, 2, 3, 4])) == 10);
 assert(map((x) => x * 2, List([1, 2, 3, 4])).equals(List([2, 4, 6, 8])));
+assert(map((x) => x % 2, List([1, 2, 3, 4])).equals(List([1, 0, 1, 0])));
 assert(filter((x) => x <= 2, List([1, 2, 3, 4])).equals(List([1, 2])));
 assert(filter((x) => x % 2 == 0, List([1, 2, 3, 4])).equals(List([2, 4])));
 assert(partition((x) => x <= 2, List([1, 2, 3, 4])).equals(List([List([1, 2]), List([3, 4])])));

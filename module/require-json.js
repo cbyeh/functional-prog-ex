@@ -29,9 +29,9 @@ const require_ = require('./require.js');
  * turns a string into one such object.
  */
 function loadJSONFile(resolvedName) {
-  var path = require('path');
-  var filecontents =
-  return JSON.parse()
+  const fs = require('fs');
+  const json = fs.readFileSync(resolvedName, 'utf8');
+  return JSON.parse(json);
 }
 exports.loadJSONFile = loadJSONFile;
 

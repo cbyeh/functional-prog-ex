@@ -27,10 +27,12 @@ const assert = require('assert');
  *   behavior of for_.
  */
 function for_(cur, cond, next, fbody) {
-  function cond(cur) {
-
+  if (!cond(cur)) {
+    return;
   }
-
+  fbody(cur);
+  cur = next(cur);
+  for_(cur, cond, next, fbody);
 }
 exports.for_ = for_;
 
